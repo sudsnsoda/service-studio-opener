@@ -1,6 +1,6 @@
 ---
 name: o11-to-odc-migration
-description: Playbook for migrating an OutSystems 11 module to OutSystems Developer Cloud (ODC) — read the O11 source with the Service Studio MCP (opening the needed O11 modules automatically through the studio-opener tools), build the ODC apps through OutSystems Mentor (ODC MCP), and migrate the O11 data with migration timers and *_Mapping entities. Use when the user asks to migrate, port, rebuild or convert an O11 module/screen/action/entity to ODC, or to build the O11→ODC data migration for an app.
+description: Playbook for migrating an OutSystems 11 module to OutSystems Developer Cloud (ODC) — read the O11 source with the Service Studio MCP (opening the needed O11 modules automatically through the studio-opener tools), and build the ODC apps through OutSystems Mentor (ODC MCP). Use when the user asks to migrate, port, rebuild or convert an O11 module/screen/action/entity to ODC.
 ---
 
 # O11 → ODC migration
@@ -73,16 +73,3 @@ Rules for this loop:
 - **A 404 when navigating to a screen usually means the user lacks one of the screen's roles** (ODC shows 404, not a permissions error). Make detail and edit screens allow the same roles as the list screen that links to them.
 - ODC has no anonymous records; create a named structure.
 - Mentor occasionally touches other loaded apps; check `assetFacts.changeApplied` per asset after every run.
-
-## Data migration (O11 → ODC)
-
-- **Source:** an ODC external connection to the O11 database. The user must first expose the tables on the connection in ODC Portal; then import them into the core app with an `_OS11` suffix.
-- **Timers** `A<n>_<Entity>` in a temporary migration folder: no schedule, Normal priority, 20-minute timeout, each calling a same-name server action with no parameters.
-- **Mapping entity** `<Entity>_Mapping`: `ODC_Id` (<Entity> Identifier, Protect) + `OS11_Id` (<Entity>_OS11 Identifier, Ignore).
-- **Who gets a mapping:** the main entity, its main children and every non-static configuration or lookup entity. Foreign keys to those resolve **through the mapping**, never by Order. Logs, notes, items, translations and permissions get no mapping.
-- **Static entities:** O11 Id set manually → copy the Id as-is. O11 Id AutoNumber → match by `Order`. Check first that the O11 and ODC values match.
-- **GetData:** Max 500, sorted by O11 Id; LEFT join the entity's own `_Mapping` with filter `ODC_Id = NullIdentifier()` (not migrated yet); `IsDeleted = False`; INNER join mandatory foreign-key mappings, LEFT join optional ones.
-- **Flow:** if empty → End. ForEach → create the entity with **`Id: NullIdentifier()` set explicitly** (unless the ODC entity's Id is manual, then copy the O11 Id with `IntegerToIdentifier`) → create the mapping → children (also `Id: NullIdentifier()`) → `CommitTransaction`. After the loop: wake the timer itself → `ApplicationInvalidateCache` → End. AllExceptions → End.
-- Keep the original created and updated datetimes. ODC user identifiers are text, so use `NullTextIdentifier()` for empty user ids.
-- Self-references → a separate last timer that fills them through the mapping.
-- The user runs the timers in order, after any shared mappings are filled, then compares row counts (O11 non-deleted vs ODC). Rows whose mandatory foreign key has no mapping are skipped silently; say so.
