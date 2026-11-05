@@ -197,3 +197,7 @@ To uninstall:
 3. Delete `~/.claude/skills/servicestudio-mcp-oml`, and any `.skill` folders you installed there.
 4. macOS: turn off Accessibility access for your terminal app if you no longer need it.
 5. Optional: stop the MCP server in Service Studio (Edit > MCP Server). Claude Code can stay installed.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
