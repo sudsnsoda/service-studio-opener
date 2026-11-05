@@ -23,7 +23,6 @@ Claude Code --(HTTP, read tools)------------------------------------------------
 | `install-windows.ps1` | Windows installer (PowerShell) |
 | `install-macos.sh` | macOS installer (bash) |
 | `src/server_win.py`, `src/server_mac.py` | The opener servers. The installers embed these; edit here, then regenerate the installers |
-| `skills/meivworld-business-logic-docs` | Skill that documents an application's business logic (extraction in Claude Code, page building in claude.ai) |
 | `skills/service-studio-auto-module-open-os11` | Service Studio Auto-Module Open for OS11: opens O11 modules through `ensure_module_open` before reading them |
 
 ## Requirements
@@ -142,7 +141,6 @@ Name the module in your request, and Claude Code opens it before reading. Start 
 | --- | --- |
 | Read one module | `Summarize module Worker_CS` |
 | Read several modules | `List the server actions of Operations_BL and Job_CS` (they open one at a time) |
-| Document an application | Use the `meivworld-business-logic-docs` skill: extract in Claude Code into `docs/<Application>/`, then build the page in claude.ai |
 | Migrate to ODC | Use the `service-studio-auto-module-open-os11` skill; it opens each O11 module it needs with `ensure_module_open` |
 
 The skills live in `skills/`. Package a folder as a `.skill` file (a ZIP with the folder at its top level) to upload it in claude.ai or to place next to the installer. Each open takes over the mouse and keyboard for a few seconds, so do not type in other windows while Claude Code works on a new module.
