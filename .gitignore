@@ -1,0 +1,18 @@
+# local environments and caches
+studio-opener/
+venv/
+__pycache__/
+*.pyc
+*.bak
+# generated outputs and archives
+*.zip
+docs/
+.DS_Store
+.venv/
+# packaged skills (build output of skills/)
+*.skill
+# local secrets and editor files
+.env
+.vscode/
+.idea/
+Thumbs.db
