@@ -1,9 +1,9 @@
 ---
-name: o11-to-odc-migration
+name: service-studio-auto-module-open-os11
 description: Playbook for migrating an OutSystems 11 module to OutSystems Developer Cloud (ODC) — read the O11 source with the Service Studio MCP (opening the needed O11 modules automatically through the studio-opener tools), and build the ODC apps through OutSystems Mentor (ODC MCP). Use when the user asks to migrate, port, rebuild or convert an O11 module/screen/action/entity to ODC.
 ---
 
-# O11 → ODC migration
+# Service Studio Auto-Module Open for OS11
 
 Load the `outsystems:outsystems` skill before any ODC MCP call.
 
